@@ -106,8 +106,9 @@ void Facturation(Nr *lr, Nv *lv)
 {
     char mat[10];
     int km;
-
+    printf("Matricule: ");
     scanf("%9s", mat);
+    printf("Kilometrage parcouru: ");
     scanf("%d", &km);
 
     Nv *v = ChercherVoiture(lv, mat);
