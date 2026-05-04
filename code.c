@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 /* --- Couleurs ANSI --- */
 #define RESET "\033[0m"
 #define BOLD "\033[1m"
@@ -11,7 +10,6 @@
 #define BLUE "\033[34m"
 #define MAGENTA "\033[35m"
 #define CYAN "\033[36m"
-
 /* --- Structures --- */
 typedef struct Client
 {
@@ -19,13 +17,11 @@ typedef struct Client
     char cin[10];
     char telephone[15];
 } client;
-
 typedef struct NdClient
 {
     client c;
     struct NdClient *next;
 } Nc;
-
 typedef struct Voiture
 {
     char marque[50];
@@ -35,13 +31,11 @@ typedef struct Voiture
     int kilometrage;
     int disponible;
 } voiture;
-
 typedef struct NdVoiture
 {
     voiture v;
     struct NdVoiture *next;
 } Nv;
-
 typedef struct Reservation
 {
     char cin[10];
@@ -49,15 +43,13 @@ typedef struct Reservation
     int duree;
     int km;
     float prix;
-    int active; // 1 = En cours, 0 = Terminee/Payee
+    int active;
 } reservation;
-
 typedef struct NdReservation
 {
     reservation r;
     struct NdReservation *next;
 } Nr;
-
 /* --- Fonctions Utilitaires --- */
 void clearScreen()
 {
@@ -67,7 +59,6 @@ void clearScreen()
     system("clear");
 #endif
 }
-
 void Entete(char *titre)
 {
     clearScreen();
@@ -75,17 +66,14 @@ void Entete(char *titre)
     printf("| %-47s |\n", titre);
     printf("+-------------------------------------------------+\n" RESET);
 }
-
 void Erreur(char *message)
 {
     printf(RED BOLD "Erreur: %s\n" RESET, message);
 }
-
 void Succes(char *message)
 {
     printf(GREEN BOLD "Succes: %s\n" RESET, message);
 }
-
 void Pause()
 {
     printf(YELLOW "\nAppuyez sur Entree pour continuer..." RESET);
@@ -93,7 +81,6 @@ void Pause()
         ;
     getchar();
 }
-
 /* --- RECHERCHES --- */
 Nv *rechercherVoiture(Nv *tete, char *matricule)
 {
@@ -105,7 +92,6 @@ Nv *rechercherVoiture(Nv *tete, char *matricule)
     }
     return NULL;
 }
-
 Nc *rechercherClient(Nc *tete, char *cin)
 {
     while (tete != NULL)
@@ -116,7 +102,6 @@ Nc *rechercherClient(Nc *tete, char *cin)
     }
     return NULL;
 }
-
 Nr *rechercherReservationActive(Nr *tete, char *cin, char *matricule)
 {
     while (tete != NULL)
@@ -127,7 +112,6 @@ Nr *rechercherReservationActive(Nr *tete, char *cin, char *matricule)
     }
     return NULL;
 }
-
 /* --- GESTION VOITURES --- */
 void AfficherV(voiture v)
 {
@@ -138,7 +122,6 @@ void AfficherV(voiture v)
     else
         printf(RED "Non\n" RESET);
 }
-
 void AjouterVoiture(Nv **tete)
 {
     voiture v;
@@ -147,7 +130,6 @@ void AjouterVoiture(Nv **tete)
     scanf(" %[^\n]", v.marque);
     printf("Modele: ");
     scanf(" %[^\n]", v.modele);
-
     do
     {
         printf("Matricule (unique, 8 carac max): ");
@@ -155,28 +137,23 @@ void AjouterVoiture(Nv **tete)
         if (rechercherVoiture(*tete, v.matricule) != NULL)
             Erreur("Ce matricule existe deja.");
     } while (rechercherVoiture(*tete, v.matricule) != NULL);
-
     do
     {
         printf("Categorie (A, B, C): ");
         scanf(" %c", &v.categorie);
     } while (v.categorie != 'A' && v.categorie != 'B' && v.categorie != 'C');
-
     do
     {
         printf("Kilometrage: ");
         scanf("%d", &v.kilometrage);
     } while (v.kilometrage < 0);
-
     v.disponible = 1;
-
     Nv *newE = (Nv *)malloc(sizeof(Nv));
     newE->v = v;
     newE->next = *tete;
     *tete = newE;
     Succes("Voiture ajoutee au parc.");
 }
-
 void ModifierVoiture(Nv *tete)
 {
     char mat[10];
@@ -184,13 +161,11 @@ void ModifierVoiture(Nv *tete)
     printf("Matricule de la voiture: ");
     scanf(" %9s", mat);
     Nv *temp = rechercherVoiture(tete, mat);
-
     if (temp == NULL)
     {
         Erreur("Voiture introuvable.");
         return;
     }
-
     printf("Nouvelle Marque (%s): ", temp->v.marque);
     scanf(" %[^\n]", temp->v.marque);
     printf("Nouveau Modele (%s): ", temp->v.modele);
@@ -202,14 +177,12 @@ void ModifierVoiture(Nv *tete)
     } while (temp->v.categorie != 'A' && temp->v.categorie != 'B' && temp->v.categorie != 'C');
     Succes("Informations mises a jour.");
 }
-
 void SupprimerVoiture(Nv **tete)
 {
     char mat[10];
     Entete("SUPPRIMER UNE VOITURE");
     printf("Matricule de la voiture: ");
     scanf(" %9s", mat);
-
     Nv *temp = *tete, *prev = NULL;
     while (temp != NULL)
     {
@@ -233,7 +206,6 @@ void SupprimerVoiture(Nv **tete)
     }
     Erreur("Voiture introuvable.");
 }
-
 void AfficherToutesVoitures(Nv *tete)
 {
     Entete("LISTE DU PARC AUTOMOBILE");
@@ -248,7 +220,6 @@ void AfficherToutesVoitures(Nv *tete)
         tete = tete->next;
     }
 }
-
 void AfficherVoituresDisponibles(Nv *tete)
 {
     Entete("VEHICULES DISPONIBLES");
@@ -265,18 +236,15 @@ void AfficherVoituresDisponibles(Nv *tete)
     if (!found)
         printf("Aucun vehicule disponible actuellement.\n");
 }
-
 /* --- GESTION CLIENTS --- */
 void AfficherClient(client c)
 {
     printf(CYAN "CIN: %-10s " RESET "| Nom: %-20s | Tel: %s\n", c.cin, c.nom, c.telephone);
 }
-
 void AjouterClient(Nc **tete)
 {
     client c;
     Entete("NOUVEAU CLIENT");
-
     do
     {
         printf("CIN (unique): ");
@@ -284,19 +252,16 @@ void AjouterClient(Nc **tete)
         if (rechercherClient(*tete, c.cin) != NULL)
             Erreur("Ce CIN existe deja.");
     } while (rechercherClient(*tete, c.cin) != NULL);
-
     printf("Nom complet: ");
     scanf(" %[^\n]", c.nom);
     printf("Telephone: ");
     scanf(" %14s", c.telephone);
-
     Nc *newE = (Nc *)malloc(sizeof(Nc));
     newE->c = c;
     newE->next = *tete;
     *tete = newE;
     Succes("Client enregistre.");
 }
-
 void ModifierClient(Nc *tete)
 {
     char cin[10];
@@ -315,7 +280,6 @@ void ModifierClient(Nc *tete)
     scanf(" %14s", temp->c.telephone);
     Succes("Client mis a jour.");
 }
-
 void AfficherTousClients(Nc *tete)
 {
     Entete("LISTE DES CLIENTS");
@@ -330,15 +294,12 @@ void AfficherTousClients(Nc *tete)
         tete = tete->next;
     }
 }
-
 void SupprimerClient(Nc **teteC, Nr *teteR)
 {
     char cin[10];
     Entete("SUPPRIMER UN CLIENT");
     printf("CIN du client a supprimer: ");
     scanf(" %9s", cin);
-
-    // Verifier si le client a une location en cours
     Nr *tr = teteR;
     while (tr)
     {
@@ -349,7 +310,6 @@ void SupprimerClient(Nc **teteC, Nr *teteR)
         }
         tr = tr->next;
     }
-
     Nc *temp = *teteC, *prev = NULL;
     while (temp)
     {
@@ -368,7 +328,6 @@ void SupprimerClient(Nc **teteC, Nr *teteR)
     }
     Erreur("Client introuvable.");
 }
-
 /* --- GESTION RESERVATIONS ET FACTURATION --- */
 void EffectuerReservation(Nr **teteR, Nv *teteV, Nc **teteC)
 {
@@ -378,18 +337,16 @@ void EffectuerReservation(Nr **teteR, Nv *teteV, Nc **teteC)
         Erreur("Le parc automobile est vide.");
         return;
     }
-
     int choixC;
     printf("1. Nouveau Client\n");
     printf("2. Ancien Client\n");
     printf("Votre choix : ");
     scanf("%d", &choixC);
-
     char cin_res[10];
     if (choixC == 1)
     {
         AjouterClient(teteC);
-        strcpy(cin_res, (*teteC)->c.cin); // Le dernier ajoute est en tête
+        strcpy(cin_res, (*teteC)->c.cin);
     }
     else
     {
@@ -401,13 +358,11 @@ void EffectuerReservation(Nr **teteR, Nv *teteV, Nc **teteC)
             return;
         }
     }
-
     char mat_res[10];
     printf("\nVehicules disponibles :\n");
     AfficherVoituresDisponibles(teteV);
     printf("\nMatricule du vehicule choisi : ");
     scanf(" %9s", mat_res);
-
     Nv *v = rechercherVoiture(teteV, mat_res);
     if (!v)
     {
@@ -419,25 +374,21 @@ void EffectuerReservation(Nr **teteR, Nv *teteV, Nc **teteC)
         Erreur("Vehicule non disponible.");
         return;
     }
-
     reservation r;
     strcpy(r.cin, cin_res);
     strcpy(r.matricule, mat_res);
     printf("Duree prevue (en jours) : ");
     scanf("%d", &r.duree);
     r.active = 1;
-    r.km = 0; // Sera defini au retour
+    r.km = 0;
     r.prix = 0.0;
-
     Nr *newR = (Nr *)malloc(sizeof(Nr));
     newR->r = r;
     newR->next = *teteR;
     *teteR = newR;
-
-    v->v.disponible = 0; // Rendre la voiture indisponible
+    v->v.disponible = 0;
     Succes("Reservation effectuee avec succes.");
 }
-
 void AfficherReservationsEnCours(Nr *tete)
 {
     Entete("RESERVATIONS EN COURS");
@@ -455,45 +406,32 @@ void AfficherReservationsEnCours(Nr *tete)
     if (count == 0)
         printf("Aucune reservation en cours.\n");
 }
-
 void RetourVehiculeEtFacturation(Nr *teteR, Nv *teteV, Nc *teteC)
 {
     char cin[10], mat[10];
     Entete("RETOUR VEHICULE & FACTURATION");
-
     printf("CIN du Client: ");
     scanf(" %9s", cin);
     printf("Matricule du vehicule: ");
     scanf(" %9s", mat);
-
     Nr *res = rechercherReservationActive(teteR, cin, mat);
     if (!res)
     {
         Erreur("Aucune reservation active trouvee pour ce couple Client/Vehicule.");
         return;
     }
-
     Nv *v = rechercherVoiture(teteV, mat);
     Nc *c = rechercherClient(teteC, cin);
-
     printf("\nKilometres parcourus lors de la location : ");
     int km_parcourus;
     scanf("%d", &km_parcourus);
-
-    // Mise a jour de l'objet reservation
     res->r.km = km_parcourus;
-    res->r.active = 0; // La location est terminee
-
-    // Mise a jour de la voiture
+    res->r.active = 0;
     v->v.kilometrage += km_parcourus;
     v->v.disponible = 1;
-
-    // Calcul du prix : 0.5dh par KM + un prix de base par jour selon categorie (bonus)
     float prix_jour = (v->v.categorie == 'A') ? 150 : (v->v.categorie == 'B') ? 250
                                                                               : 400;
     res->r.prix = (res->r.duree * prix_jour) + (km_parcourus * 0.5);
-
-    // Affichage de la facture
     clearScreen();
     printf(BOLD MAGENTA "=================================================\n");
     printf("                  FACTURE DETAILS                  \n");
@@ -506,13 +444,11 @@ void RetourVehiculeEtFacturation(Nr *teteR, Nv *teteV, Nc *teteC)
     printf("-------------------------------------------------\n");
     printf(BOLD GREEN "TOTAL A PAYER     : %.2f DH\n" RESET, res->r.prix);
     printf(BOLD MAGENTA "=================================================\n\n" RESET);
-
     int paiement;
     printf("Modes de paiement:\n1. Carte Bancaire\n2. Virement\n3. Especes\nChoix du paiement: ");
     scanf("%d", &paiement);
     Succes("Paiement valide. Vehicule restitue au parc.");
 }
-
 void HistoriqueLocationsClient(Nr *teteR, char *cin)
 {
     int count = 0;
@@ -530,8 +466,6 @@ void HistoriqueLocationsClient(Nr *teteR, char *cin)
     if (count == 0)
         printf("Aucun historique pour ce client.\n");
 }
-
-/* --- FONCTION DE LIBERATION MEMOIRE --- */
 void LibererTout(Nv *teteV, Nc *teteC, Nr *teteR)
 {
     Nv *tv;
@@ -556,53 +490,12 @@ void LibererTout(Nv *teteV, Nc *teteC, Nr *teteR)
         free(tr);
     }
 }
-
-
-
-/* --- FONCTION DE DONNEES DE TEST (MOCK DATA) --- */
-void GenererDonneesTest(Nv **teteV, Nc **teteC, Nr **teteR) {
-    // 1. Ajout de Voitures de test
-    Nv *v1 = (Nv *)malloc(sizeof(Nv));
-    strcpy(v1->v.marque, "Renault"); strcpy(v1->v.modele, "Clio 4"); strcpy(v1->v.matricule, "11111111");
-    v1->v.categorie = 'A'; v1->v.kilometrage = 45000; v1->v.disponible = 1;
-    v1->next = *teteV; *teteV = v1;
-
-    Nv *v2 = (Nv *)malloc(sizeof(Nv));
-    strcpy(v2->v.marque, "Dacia"); strcpy(v2->v.modele, "Duster"); strcpy(v2->v.matricule, "22222222");
-    v2->v.categorie = 'B'; v2->v.kilometrage = 12000; v2->v.disponible = 1;
-    v2->next = *teteV; *teteV = v2;
-
-    Nv *v3 = (Nv *)malloc(sizeof(Nv));
-    strcpy(v3->v.marque, "Mercedes"); strcpy(v3->v.modele, "Classe C"); strcpy(v3->v.matricule, "33333333");
-    v3->v.categorie = 'C'; v3->v.kilometrage = 5000; v3->v.disponible = 0; // Celle-ci sera en location
-    v3->next = *teteV; *teteV = v3;
-
-    // 2. Ajout de Clients de test
-    Nc *c1 = (Nc *)malloc(sizeof(Nc));
-    strcpy(c1->c.nom, "Ahmed Alaoui"); strcpy(c1->c.cin, "EE12345"); strcpy(c1->c.telephone, "0600112233");
-    c1->next = *teteC; *teteC = c1;
-
-    Nc *c2 = (Nc *)malloc(sizeof(Nc));
-    strcpy(c2->c.nom, "Sara Benali"); strcpy(c2->c.cin, "EE98765"); strcpy(c2->c.telephone, "0699887766");
-    c2->next = *teteC; *teteC = c2;
-
-    // 3. Ajout d'une Réservation en cours (Ahmed loue la Mercedes)
-    Nr *r1 = (Nr *)malloc(sizeof(Nr));
-    strcpy(r1->r.cin, "EE12345"); strcpy(r1->r.matricule, "33333333");
-    r1->r.duree = 5; r1->r.km = 0; r1->r.prix = 0.0; r1->r.active = 1; // En cours
-    r1->next = *teteR; *teteR = r1;
-
-    printf(GREEN BOLD "=> [DEV] Données de test injectées avec succès !\n" RESET);
-    Pause();
-}
-/* --- MENUS --- */
 int main()
 {
     Nv *teteV = NULL;
     Nc *teteC = NULL;
     Nr *teteR = NULL;
     int choixP, choixV, choixC, choixL, choixR;
-    GenererDonneesTest(&teteV, &teteC, &teteR);
     do
     {
         Entete("MENU PRINCIPAL");
@@ -612,10 +505,9 @@ int main()
         printf("  " RED "4. QUITTER\n" RESET);
         printf("\nVOTRE CHOIX : ");
         scanf("%d", &choixP);
-
         switch (choixP)
         {
-        case 1: // Menu Voitures
+        case 1:
             do
             {
                 Entete("GESTION DES VOITURES");
@@ -684,8 +576,7 @@ int main()
                 }
             } while (choixV != 0);
             break;
-
-        case 2: // Menu Clients
+        case 2:
             do
             {
                 Entete("GESTION DES CLIENTS");
@@ -737,8 +628,7 @@ int main()
                 }
             } while (choixC != 0);
             break;
-
-        case 3: // Menu Locations
+        case 3:
             do
             {
                 Entete("GESTION DES LOCATIONS");
@@ -747,9 +637,8 @@ int main()
                 printf("  0. Retour\n");
                 printf("\nVOTRE CHOIX : ");
                 scanf("%d", &choixL);
-
                 if (choixL == 1)
-                { // Sous-menu Reservations
+                {
                     do
                     {
                         Entete("GESTION DES RESERVATIONS");
@@ -809,7 +698,6 @@ int main()
             break;
         }
     } while (choixP != 4);
-
     LibererTout(teteV, teteC, teteR);
     printf(GREEN BOLD "\nMerci d'avoir utilise notre systeme. Au revoir !\n" RESET);
     return 0;
