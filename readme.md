@@ -1,67 +1,351 @@
-﻿# Projet EMSI - Gestion des locations de voitures
+﻿# 🚗 Gestion d'Agence de Location de Voitures
 
-## Presentation
-Mini projet en langage C realise pour l'Ecole Marocaine des Sciences de l'Ingenieur (EMSI). Ce programme permet de gerer un parc automobile, des clients, des reservations et la facturation dans un systeme de location de voitures.
+<div align="center">
 
-## Objectif
-Le projet vise a gerer les operations suivantes pour une agence de location de voitures :
-- gestion du parc automobile (marque, modele, matricule, categorie, kilometrage, disponibilite)
-- gestion des clients (ajout, modification, recherche, suppression, liste)
-- gestion des reservations et annulations
-- suivi des historiques de location par client et par voiture
-- facturation simple basee sur le kilometrage parcoure
+![Language](https://img.shields.io/badge/Language-C-blue.svg)
+![Platform](https://img.shields.io/badge/Platform-Console-black.svg)
+![Memory](https://img.shields.io/badge/Data%20Structure-Linked%20Lists-green.svg)
+![Status](https://img.shields.io/badge/Project-Completed-success.svg)
+![EMSI](https://img.shields.io/badge/School-EMSI-red.svg)
 
-## Fonctionnalites principales
-### Gestion des voitures
-- Ajouter, modifier, rechercher et supprimer une voiture
-- Lister toutes les voitures
-- Lister uniquement les voitures disponibles
-- Trier les voitures par kilometrage
-- Historique de location d'une voiture
+### 📚 Mini Projet de Programmation C — EMSI 2025/2026
 
-### Gestion des clients
-- Ajouter, modifier, rechercher et supprimer un client
-- Lister tous les clients
-- Afficher l'historique des reservations et paiements d'un client
+> Application complète de gestion d'une agence de location de voitures
+> développée en langage C avec structures dynamiques, gestion mémoire
+> et sauvegarde persistante dans des fichiers texte.
 
-### Gestion des locations
-- Effectuer une reservation pour un client et une voiture disponible
-- Annuler une reservation
-- Consulter la liste des reservations en cours
-- Consulter l'historique d'un client ou d'une voiture
-- Facturation basee sur le nombre de kilometres parcours
+</div>
 
-## Architecture du projet
-- `main.c` : point d'entree du programme, initialise les listes et lance le menu principal
-- `menu.c` / `menu.h` : menu principal et sous-menus ANSI stylises
-- `Client.c` / `Client.h` : gestion des clients et des listes chainees de clients
-- `Voiture.c` / `Voiture.h` : gestion des voitures et des listes chainees de vehicules
-- `Reservation.c` / `Reservation.h` : gestion des reservations, annulations, facturations et historiques
+---
 
-## Style et interface
-Le menu utilise des codes ANSI pour un affichage plus professionnel dans le terminal. Les sous-menus sont clairement separés et la saisie est traitee de maniere plus sure pour reduire les erreurs de navigation.
+# ✨ Aperçu du Projet
 
-## Compilation
-Assurez-vous d'avoir un compilateur C installe (par exemple `gcc`). Depuis le dossier du projet :
+Ce projet est une application console développée en **langage C** permettant de gérer une agence de location de voitures.
 
-```bash
-gcc -Wall -Wextra main.c menu.c Client.c Voiture.c Reservation.c -o gestion_voitures.exe
+Le système permet de :
+
+✅ Gérer les voitures
+✅ Gérer les clients
+✅ Effectuer des réservations
+✅ Retourner les véhicules
+✅ Générer des factures
+✅ Sauvegarder les données automatiquement
+✅ Trier les voitures disponibles
+✅ Rechercher par marque
+✅ Consulter l’historique des clients
+
+---
+
+# 🖥️ Interface Console ANSI
+
+Le projet utilise des **couleurs ANSI** pour offrir une interface plus moderne et professionnelle.
+
+```c
+#define RED "\033[31m"
+#define GREEN "\033[32m"
+#define CYAN "\033[36m"
+#define BOLD "\033[1m"
 ```
 
-## Execution
-Lancez l'executable genere :
+✔ Menus dynamiques
+✔ Messages d’erreurs colorés
+✔ Validation des saisies
+✔ Factures formatées
+
+---
+
+# 📂 Structure du Projet
 
 ```bash
-./gestion_voitures.exe
+📁 Gestion-Location-Voitures
+│
+├── 📄 main.c
+├── 📄 voitures.txt
+├── 📄 clients.txt
+├── 📄 reservations.txt
+├── 📄 README.md
+└── 📄 rapport.pdf
 ```
 
-## Remarques
-- Le projet utilise des listes chainees pour stocker les clients, voitures et reservations en memoire.
-- Il n'y a pas de persistance sur disque dans la version actuelle : toutes les donnees sont perdues a la fermeture du programme.
-- Le tarif de facturation est calcule a 0.5 DH par kilometre parcoure.
+---
 
-## Ameliorations possibles
-- Sauvegarde/chargement des donnees dans des fichiers
-- meilleure validation des entrees utilisateur
-- gestion des modes de paiement (especes, carte, virement)
-- interface graphique ou application multiplateforme
+# ⚙️ Fonctionnalités Principales
+
+## 🚘 Gestion des Voitures
+
+* Ajouter une voiture
+* Modifier une voiture
+* Supprimer une voiture
+* Afficher toutes les voitures
+* Afficher les voitures disponibles triées
+* Rechercher une voiture par marque
+
+---
+
+## 👤 Gestion des Clients
+
+* Ajouter un client
+* Modifier un client
+* Supprimer un client
+* Afficher tous les clients
+* Consulter l’historique d’un client
+
+---
+
+## 📋 Gestion des Réservations
+
+* Nouvelle réservation
+* Retour d’un véhicule
+* Calcul automatique du prix
+* Gestion du paiement
+* Affichage des réservations
+
+---
+
+# 💾 Sauvegarde & Chargement
+
+Le programme sauvegarde automatiquement les données dans des fichiers texte :
+
+| Fichier            | Description                 |
+| ------------------ | --------------------------- |
+| `voitures.txt`     | Données des voitures        |
+| `clients.txt`      | Données des clients         |
+| `reservations.txt` | Historique des réservations |
+
+✔ Persistance des données
+✔ Rechargement automatique au lancement
+
+---
+
+# 🧠 Structures de Données Utilisées
+
+Le projet utilise des **listes chaînées simples** afin de permettre une allocation dynamique de mémoire.
+
+## Structure Voiture
+
+```c
+typedef struct Voiture
+{
+    char marque[50];
+    char modele[50];
+    char matricule[20];
+    char categorie;
+    int kilometrage;
+    int disponible;
+} Voiture;
+```
+
+---
+
+## Structure Client
+
+```c
+typedef struct Client
+{
+    char nom[100];
+    char cin[20];
+    char telephone[20];
+} Client;
+```
+
+---
+
+## Structure Reservation
+
+```c
+typedef struct Reservation
+{
+    int idReservation;
+    char cin[20];
+    char matricule[20];
+    int duree;
+    int kmParcourus;
+    float prix;
+    char modePaiement[30];
+    int active;
+} Reservation;
+```
+
+---
+
+# 🔍 Algorithmes Implémentés
+
+## 🔹 Recherche Linéaire — `O(n)`
+
+Le système parcourt les listes chaînées pour :
+
+* rechercher une voiture
+* rechercher un client
+* rechercher une réservation
+
+---
+
+## 🔹 Tri à Bulles — `O(n²)`
+
+Les voitures disponibles sont triées par kilométrage croissant.
+
+```c
+if (tab[j].kilometrage > tab[j + 1].kilometrage)
+{
+    Voiture temp = tab[j];
+    tab[j] = tab[j + 1];
+    tab[j + 1] = temp;
+}
+```
+
+---
+
+# 💰 Calcul de Facturation
+
+Le prix total est calculé automatiquement selon :
+
+```math
+Prix = (Durée × Tarif Catégorie) + (KM × 0.5)
+```
+
+## Tarifs
+
+| Catégorie | Tarif  |
+| --------- | ------ |
+| A         | 150 DH |
+| B         | 250 DH |
+| C         | 400 DH |
+
+---
+
+# 📸 Exemple d’Exécution
+
+## ✅ Ajout d’une Voiture
+
+```bash
+============================================================
+AJOUTER UNE VOITURE
+============================================================
+
+Marque : Renault
+Modele : Clio
+Matricule : 1234-A-15
+Categorie : A
+Kilometrage : 45000
+
+SUCCES : Voiture ajoutee.
+```
+
+---
+
+## ✅ Facturation
+
+```bash
+============================================================
+FACTURE
+============================================================
+
+Client        : Aymane Bilal
+Voiture       : Dacia Logan
+Duree         : 3 jours
+KM            : 200
+Paiement      : Carte Bancaire
+TOTAL         : 850.00 DH
+```
+
+---
+
+# 🛡️ Sécurité & Validations
+
+✔ Vérification des doublons de matricule
+✔ Vérification des CIN existants
+✔ Validation des catégories A/B/C
+✔ Validation des kilomètres positifs
+✔ Blocage de suppression si réservation active
+✔ Gestion mémoire avec `malloc()` et `free()`
+
+---
+
+# 🧹 Gestion Mémoire
+
+Le programme libère toute la mémoire avant de quitter :
+
+```c
+free(tmp);
+```
+
+✔ Aucun memory leak
+✔ Allocation dynamique optimisée
+
+---
+
+# 🏗️ Compilation
+
+## ▶ Sous Linux / Mac
+
+```bash
+gcc main.c -o gestion
+./gestion
+```
+
+---
+
+## ▶ Sous Windows (MinGW)
+
+```bash
+gcc main.c -o gestion.exe
+gestion.exe
+```
+
+---
+
+# 📚 Concepts C Utilisés
+
+* Structures
+* Pointeurs
+* Listes chaînées
+* Allocation dynamique
+* Fichiers texte
+* ANSI Colors
+* Modularité
+* Tableaux
+* Fonctions
+* Boucles
+* Conditions
+* Gestion mémoire
+
+---
+
+# 🚀 Améliorations Futures
+
+* Interface graphique (GUI)
+* Base de données SQLite
+* Authentification Admin
+* Statistiques de location
+* Export PDF des factures
+* Système multi-utilisateurs
+* Gestion des dates réelles
+
+---
+
+# 👨‍💻 Réalisé Par
+
+## 🎓 EMSI — 2ème Année Préparatoire
+
+### 👤 Aymane Bilal
+
+### 👤 Aya Kasmi
+
+---
+
+# 📖 Bibliographie
+
+* The C Programming Language — Kernighan & Ritchie
+* Documentation ANSI C
+* Cours EMSI 2025/2026
+* cppreference.com
+
+---
+
+<div align="center">
+
+# ⭐ Merci d’avoir visité ce projet !
+
+Si le projet vous plaît, n’hésitez pas à laisser une ⭐ sur GitHub.
+
+</div>
